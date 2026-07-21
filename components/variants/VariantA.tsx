@@ -1,24 +1,37 @@
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Phone } from "lucide-react";
 import { Logo } from "@/components/Logo";
-import { PhotoSlot } from "@/components/PhotoSlot";
 
 const services = [
   {
     num: "01",
     title: "Residential Construction",
     body: "Custom homes built ground-up, from foundation to finish.",
+    img: "/custom-home.jpg",
+    alt: "Custom home built by 4Ma Construction in McAllen",
   },
   {
     num: "02",
     title: "Commercial Build-Outs",
     body: "Retail, church, and industrial spaces built for business.",
+    img: "/commercial.jpg",
+    alt: "Two-story commercial office built by 4Ma Construction",
   },
   {
     num: "03",
     title: "Remodels & Additions",
     body: "Patio covers, stonework, room additions, and renovations.",
+    img: "/framing.jpg",
+    alt: "Patio and roof framing jobsite",
   },
+];
+
+const projects = [
+  { label: "Custom Residence · McAllen", img: "/custom-home.jpg" },
+  { label: "Two-Story Office · McAllen", img: "/commercial.jpg" },
+  { label: "Spanish Colonial Estate · Edinburg", img: "/hero.jpg" },
+  { label: "Patio & Roof Framing · Edinburg", img: "/framing.jpg" },
 ];
 
 const stats = [
@@ -77,7 +90,14 @@ export function VariantA() {
 
       {/* Hero */}
       <section className="relative flex h-[560px] items-center overflow-hidden bg-ink md:h-[640px]">
-        <PhotoSlot label="hero photo" className="absolute inset-0 opacity-55" />
+        <Image
+          src="/hero.jpg"
+          alt="Spanish-colonial estate at dusk, built by 4Ma Construction"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover opacity-70"
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/60 to-transparent" />
         <div className="relative flex max-w-[680px] flex-col gap-5 px-6 md:px-14">
           <span className="font-body text-sm font-semibold uppercase tracking-[2px] text-accent-light">
@@ -131,7 +151,15 @@ export function VariantA() {
               transition={{ duration: 0.5 }}
               className="overflow-hidden rounded-md border border-line"
             >
-              <PhotoSlot label={s.title} className="h-[220px] w-full" />
+              <div className="relative h-[220px] w-full">
+                <Image
+                  src={s.img}
+                  alt={s.alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover"
+                />
+              </div>
               <div className="p-6">
                 <h3 className="mb-2 font-heading text-[19px] font-bold text-ink">
                   {s.title}
@@ -165,15 +193,17 @@ export function VariantA() {
           Recent Projects
         </h2>
         <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
-          {["Custom Residence", "Commercial Build-Out", "Interior Finish", "Outdoor Living"].map(
-            (label) => (
-              <PhotoSlot
-                key={label}
-                label={label}
-                className="h-[190px] w-full rounded-md"
+          {projects.map((p) => (
+            <div key={p.label} className="relative h-[190px] w-full overflow-hidden rounded-md">
+              <Image
+                src={p.img}
+                alt={p.label}
+                fill
+                sizes="(max-width: 768px) 50vw, 25vw"
+                className="object-cover"
               />
-            )
-          )}
+            </div>
+          ))}
         </div>
       </section>
 

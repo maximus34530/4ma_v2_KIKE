@@ -38,24 +38,3 @@ body {
   background: var(--paper);
   color: var(--ink);
 }
-
-/* Diagonal-stripe placeholder used wherever real photography isn't wired in yet. */
-.photo-slot {
-  background-image: repeating-linear-gradient(
-    45deg,
-    oklch(90% 0.005 90),
-    oklch(90% 0.005 90) 10px,
-    oklch(94% 0.003 90) 10px,
-    oklch(94% 0.003 90) 20px
-  );
-}
-
-.photo-slot-dark {
-  background-image: repeating-linear-gradient(
-    45deg,
-    oklch(30% 0.01 250),
-    oklch(30% 0.01 250) 10px,
-    oklch(26% 0.01 250) 10px,
-    oklch(26% 0.01 250) 20px
-  );
-}
