@@ -1,7 +1,11 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { clsx } from "clsx";
 import { Logo } from "@/components/Logo";
+import { ParallaxImage } from "@/components/ParallaxImage";
+import { Reveal, RevealGroup, fadeUpItem } from "@/components/Reveal";
+import { useScrolled } from "@/lib/useScrolled";
 
 const serviceFeatures = [
   {
@@ -90,12 +94,17 @@ const footerServices = [
 
 const footerCompany = ["Projects", "About", "Contact"];
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0 },
+const navLink =
+  "relative font-body text-sm text-white/85 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-accent-light after:transition-all after:duration-300 hover:after:w-full";
+
+const heroContainer = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
 };
 
 export function VariantPro() {
+  const scrolled = useScrolled(40);
+
   return (
     <div className="bg-white">
       {/* Utility bar */}
@@ -114,78 +123,98 @@ export function VariantPro() {
       </div>
 
       {/* Nav */}
-      <header className="flex items-center justify-between gap-6 bg-ink px-6 py-[22px] md:px-14">
+      <header
+        className={clsx(
+          "sticky top-0 z-30 flex items-center justify-between gap-6 bg-ink px-6 py-[22px] transition-shadow duration-300 md:px-14",
+          scrolled && "shadow-lg shadow-black/30"
+        )}
+      >
         <Logo size={40} />
         <nav className="hidden items-center gap-9 md:flex">
           {["Services", "Projects", "About", "Contact"].map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              className="font-body text-sm text-white/85 transition-colors hover:text-white"
-            >
+            <a key={item} href={`#${item.toLowerCase()}`} className={navLink}>
               {item}
             </a>
           ))}
-          <a
+          <motion.a
             href="#contact"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
             className="rounded-md bg-accent px-6 py-3 font-body text-sm font-semibold text-white transition-colors hover:bg-accent-dark"
           >
             Get a Quote
-          </a>
+          </motion.a>
         </nav>
       </header>
 
       {/* Hero */}
       <section className="relative flex h-[560px] items-end overflow-hidden bg-[oklch(20%_0.01_250)] md:h-[760px]">
-        <Image
+        <ParallaxImage
           src="/hero.jpg"
           alt="Spanish-colonial estate at dusk, built by 4Ma Construction"
-          fill
           priority
           sizes="100vw"
-          className="object-cover"
+          strength={70}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[oklch(20%_0.01_250)]/30 via-transparent to-[oklch(20%_0.01_250)]/85" />
-        <div className="relative flex max-w-[840px] flex-col gap-5 px-6 pb-12 md:px-14 md:pb-16">
-          <span className="font-body text-[13px] font-semibold uppercase tracking-[2.5px] text-accent-light">
+        <motion.div
+          variants={heroContainer}
+          initial="hidden"
+          animate="show"
+          className="relative flex max-w-[840px] flex-col gap-5 px-6 pb-12 md:px-14 md:pb-16"
+        >
+          <motion.span
+            variants={fadeUpItem}
+            className="font-body text-[13px] font-semibold uppercase tracking-[2.5px] text-accent-light"
+          >
             Residential &amp; Commercial Builders · Rio Grande Valley
-          </span>
-          <h1 className="font-heading text-[42px] font-extrabold leading-[1.0] tracking-tight text-white md:text-[76px]">
+          </motion.span>
+          <motion.h1
+            variants={fadeUpItem}
+            className="font-heading text-[42px] font-extrabold leading-[1.0] tracking-tight text-white md:text-[76px]"
+          >
             Homes worthy of a lifetime.
-          </h1>
-          <p className="max-w-[560px] font-body text-base leading-relaxed text-white/90 md:text-lg">
+          </motion.h1>
+          <motion.p
+            variants={fadeUpItem}
+            className="max-w-[560px] font-body text-base leading-relaxed text-white/90 md:text-lg"
+          >
             4Ma builds ground-up homes, commercial spaces, additions, and
             outdoor living across the Valley. Built right, from foundation to
             final walkthrough.
-          </p>
-          <div className="mt-1.5 flex flex-wrap gap-3.5">
-            <a
+          </motion.p>
+          <motion.div variants={fadeUpItem} className="mt-1.5 flex flex-wrap gap-3.5">
+            <motion.a
               href="#contact"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               className="rounded-md bg-accent px-7 py-4 font-body text-[15px] font-semibold text-white transition-colors hover:bg-accent-dark"
             >
               Request a Free Quote
-            </a>
-            <a
+            </motion.a>
+            <motion.a
               href="#projects"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               className="rounded-md border-[1.5px] border-white/55 bg-white/10 px-7 py-4 font-body text-[15px] font-semibold text-white backdrop-blur transition-colors hover:bg-white/20"
             >
               View Our Work
-            </a>
-          </div>
-        </div>
+            </motion.a>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* What We Build */}
       <section id="services" className="flex flex-col gap-11 px-6 py-16 md:px-14 md:py-24">
         <div className="flex flex-wrap items-end justify-between gap-6">
-          <div className="flex flex-col gap-3.5">
+          <Reveal className="flex flex-col gap-3.5">
             <span className="font-body text-[13px] font-semibold uppercase tracking-[2.5px] text-accent">
               What We Build
             </span>
             <h2 className="font-heading text-[32px] font-bold tracking-tight text-ink md:text-[42px]">
               Two sectors. One standard.
             </h2>
-          </div>
+          </Reveal>
           <a
             href="#services"
             className="flex items-center gap-1.5 font-body text-sm font-semibold text-accent hover:text-accent-dark"
@@ -197,19 +226,18 @@ export function VariantPro() {
           {serviceFeatures.map((s) => (
             <motion.div
               key={s.key}
-              variants={fadeUp}
+              variants={fadeUpItem}
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.5 }}
-              className={`relative min-h-[260px] overflow-hidden rounded-lg ${s.span ?? ""}`}
+              className={`group relative min-h-[260px] overflow-hidden rounded-lg ${s.span ?? ""}`}
             >
               <Image
                 src={s.img}
                 alt={s.alt}
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[oklch(20%_0.01_250)]/90 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 flex flex-col gap-2 p-7">
@@ -233,27 +261,27 @@ export function VariantPro() {
       {/* Why 4Ma */}
       <section className="grid bg-[oklch(20%_0.01_250)] md:grid-cols-[1fr_1.1fr]">
         <div className="relative min-h-[320px] md:min-h-[560px]">
-          <Image
+          <ParallaxImage
             src="/framing.jpg"
             alt="Patio and roof framing jobsite detail"
-            fill
             sizes="(max-width: 768px) 100vw, 45vw"
-            className="object-cover"
+            strength={36}
           />
         </div>
         <div className="flex flex-col justify-center gap-8 px-6 py-16 md:px-18 md:py-22">
-          <div className="flex flex-col gap-4">
+          <Reveal className="flex flex-col gap-4">
             <span className="font-body text-[13px] font-semibold uppercase tracking-[2.5px] text-accent-light">
               Why 4Ma
             </span>
             <h2 className="font-heading text-[28px] font-bold leading-tight tracking-tight text-white md:text-[40px]">
               The details you never see are the ones that last.
             </h2>
-          </div>
-          <div className="flex flex-col gap-6">
+          </Reveal>
+          <RevealGroup className="flex flex-col gap-6" stagger={0.12}>
             {whyUs.map((item) => (
-              <div
+              <motion.div
                 key={item.num}
+                variants={fadeUpItem}
                 className="flex gap-5 border-t border-white/15 pt-6"
               >
                 <span className="w-9 flex-shrink-0 font-heading text-[15px] font-extrabold tracking-wide text-accent-light">
@@ -267,42 +295,46 @@ export function VariantPro() {
                     {item.body}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </RevealGroup>
         </div>
       </section>
 
       {/* Recent Projects */}
       <section id="projects" className="flex flex-col gap-11 px-6 py-16 md:px-14 md:py-24">
-        <div className="flex flex-col gap-3.5">
+        <Reveal className="flex flex-col gap-3.5">
           <span className="font-body text-[13px] font-semibold uppercase tracking-[2.5px] text-accent">
             Recent Projects
           </span>
           <h2 className="font-heading text-[32px] font-bold tracking-tight text-ink md:text-[42px]">
             Work across the Valley.
           </h2>
-        </div>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:auto-rows-[220px]">
+        </Reveal>
+        <RevealGroup
+          className="grid grid-cols-2 gap-4 md:grid-cols-4 md:auto-rows-[220px]"
+          stagger={0.1}
+        >
           {gallery.map((g) => (
-            <div
+            <motion.div
               key={g.label}
-              className={`relative min-h-[160px] overflow-hidden rounded-lg ${g.span}`}
+              variants={fadeUpItem}
+              className={`group relative min-h-[160px] overflow-hidden rounded-lg ${g.span}`}
             >
               <Image
                 src={g.img}
                 alt={g.label}
                 fill
                 sizes="(max-width: 768px) 50vw, 25vw"
-                className="object-cover"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[oklch(20%_0.01_250)]/80 via-transparent to-transparent" />
               <span className="absolute bottom-4 left-4 font-heading text-sm font-bold text-white md:text-base">
                 {g.label}
               </span>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </RevealGroup>
       </section>
 
       {/* Trusted By */}
@@ -310,16 +342,17 @@ export function VariantPro() {
         <span className="font-body text-[13px] font-semibold uppercase tracking-[2.5px] text-accent">
           Trusted By
         </span>
-        <div className="flex flex-wrap items-center gap-x-11 gap-y-4">
+        <RevealGroup className="flex flex-wrap items-center gap-x-11 gap-y-4" stagger={0.05}>
           {clients.map((c) => (
-            <span
+            <motion.span
               key={c}
+              variants={fadeUpItem}
               className="font-heading text-base font-bold text-ink-muted"
             >
               {c}
-            </span>
+            </motion.span>
           ))}
-        </div>
+        </RevealGroup>
       </section>
 
       {/* Closing CTA */}
@@ -327,7 +360,7 @@ export function VariantPro() {
         id="contact"
         className="relative flex flex-col items-start gap-8 overflow-hidden bg-accent px-6 py-16 md:flex-row md:items-center md:justify-between md:px-14 md:py-24"
       >
-        <div className="flex max-w-[640px] flex-col gap-3.5">
+        <Reveal className="flex max-w-[640px] flex-col gap-3.5">
           <h2 className="font-heading text-[30px] font-extrabold leading-tight tracking-tight text-white md:text-[46px]">
             Ready to build something worth keeping?
           </h2>
@@ -335,21 +368,23 @@ export function VariantPro() {
             Tell us about your project. We&rsquo;ll walk the site, talk
             through your plans, and give you a straight quote.
           </p>
-        </div>
-        <div className="flex flex-shrink-0 flex-col gap-3">
-          <a
+        </Reveal>
+        <Reveal delay={0.15} className="flex flex-shrink-0 flex-col gap-3">
+          <motion.a
             href="tel:+19560000000"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
             className="rounded-md bg-[oklch(20%_0.01_250)] px-8 py-[18px] text-center font-body text-base font-semibold text-white transition-colors hover:bg-black"
           >
             Request a Free Quote
-          </a>
+          </motion.a>
           <a
             href="tel:+19560000000"
             className="text-center font-body text-[15px] font-semibold text-white/90 hover:text-white"
           >
             or call (956) 000-0000
           </a>
-        </div>
+        </Reveal>
       </section>
 
       {/* Footer */}
