@@ -1,7 +1,12 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Phone } from "lucide-react";
+import { clsx } from "clsx";
 import { Logo } from "@/components/Logo";
+import { ParallaxImage } from "@/components/ParallaxImage";
+import { Reveal, RevealGroup, fadeUpItem } from "@/components/Reveal";
+import { Counter } from "@/components/Counter";
+import { useScrolled } from "@/lib/useScrolled";
 
 const services = [
   {
@@ -52,33 +57,41 @@ const clients = [
   "Paris Bakery",
 ];
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0 },
+const navLink =
+  "relative font-body text-sm text-white/85 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-accent-light after:transition-all after:duration-300 hover:after:w-full";
+
+const heroContainer = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
 };
 
 export function VariantA() {
+  const scrolled = useScrolled(40);
+
   return (
     <div className="bg-white">
       {/* Nav */}
-      <header className="flex items-center justify-between gap-6 bg-ink px-6 py-[22px] md:px-14">
+      <header
+        className={clsx(
+          "sticky top-0 z-30 flex items-center justify-between gap-6 bg-ink px-6 py-[22px] transition-shadow duration-300 md:px-14",
+          scrolled && "shadow-lg shadow-black/30"
+        )}
+      >
         <Logo />
         <nav className="hidden items-center gap-9 md:flex">
           {["Services", "Projects", "About", "Contact"].map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              className="font-body text-sm text-white/85 transition-colors hover:text-white"
-            >
+            <a key={item} href={`#${item.toLowerCase()}`} className={navLink}>
               {item}
             </a>
           ))}
-          <a
+          <motion.a
             href="#contact"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
             className="rounded-md bg-accent px-[22px] py-[11px] font-body text-sm font-semibold text-white transition-colors hover:bg-accent-dark"
           >
             Get a Quote
-          </a>
+          </motion.a>
         </nav>
         <a
           href="tel:+19560000000"
@@ -90,41 +103,59 @@ export function VariantA() {
 
       {/* Hero */}
       <section className="relative flex h-[560px] items-center overflow-hidden bg-ink md:h-[640px]">
-        <Image
+        <ParallaxImage
           src="/hero.jpg"
           alt="Spanish-colonial estate at dusk, built by 4Ma Construction"
-          fill
           priority
           sizes="100vw"
-          className="object-cover opacity-70"
+          strength={70}
+          imgClassName="opacity-70"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/60 to-transparent" />
-        <div className="relative flex max-w-[680px] flex-col gap-5 px-6 md:px-14">
-          <span className="font-body text-sm font-semibold uppercase tracking-[2px] text-accent-light">
+        <motion.div
+          variants={heroContainer}
+          initial="hidden"
+          animate="show"
+          className="relative flex max-w-[680px] flex-col gap-5 px-6 md:px-14"
+        >
+          <motion.span
+            variants={fadeUpItem}
+            className="font-body text-sm font-semibold uppercase tracking-[2px] text-accent-light"
+          >
             Residential &amp; Commercial Builders · Rio Grande Valley
-          </span>
-          <h1 className="font-heading text-[38px] font-extrabold leading-[1.05] text-white md:text-[56px]">
+          </motion.span>
+          <motion.h1
+            variants={fadeUpItem}
+            className="font-heading text-[38px] font-extrabold leading-[1.05] text-white md:text-[56px]"
+          >
             Homes worthy of a lifetime.
-          </h1>
-          <p className="font-body text-base leading-relaxed text-white/85 md:text-[17px]">
+          </motion.h1>
+          <motion.p
+            variants={fadeUpItem}
+            className="font-body text-base leading-relaxed text-white/85 md:text-[17px]"
+          >
             4Ma builds ground-up homes, commercial spaces, additions, and
             outdoor living spaces across the Valley. Based in Edinburg, TX.
-          </p>
-          <div className="mt-2 flex flex-wrap gap-3.5">
-            <a
+          </motion.p>
+          <motion.div variants={fadeUpItem} className="mt-2 flex flex-wrap gap-3.5">
+            <motion.a
               href="#contact"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               className="rounded-md bg-accent px-7 py-[15px] font-body text-[15px] font-semibold text-white transition-colors hover:bg-accent-dark"
             >
               Request a Free Quote
-            </a>
-            <a
+            </motion.a>
+            <motion.a
               href="#projects"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               className="rounded-md border-[1.5px] border-white/70 px-7 py-[15px] font-body text-[15px] font-semibold text-white transition-colors hover:bg-white/10"
             >
               View Our Work
-            </a>
-          </div>
-        </div>
+            </motion.a>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* What We Build */}
@@ -144,20 +175,19 @@ export function VariantA() {
           {services.map((s) => (
             <motion.article
               key={s.num}
-              variants={fadeUp}
+              variants={fadeUpItem}
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.5 }}
-              className="overflow-hidden rounded-md border border-line"
+              className="group overflow-hidden rounded-md border border-line"
             >
-              <div className="relative h-[220px] w-full">
+              <div className="relative h-[220px] w-full overflow-hidden">
                 <Image
                   src={s.img}
                   alt={s.alt}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                 />
               </div>
               <div className="p-6">
@@ -174,37 +204,46 @@ export function VariantA() {
       </section>
 
       {/* Stats */}
-      <section className="grid grid-cols-2 gap-y-8 bg-ink px-6 py-14 text-center md:grid-cols-4 md:px-14">
+      <RevealGroup
+        className="grid grid-cols-2 gap-y-8 bg-ink px-6 py-14 text-center md:grid-cols-4 md:px-14"
+        stagger={0.1}
+      >
         {stats.map((s) => (
-          <div key={s.label}>
+          <motion.div key={s.label} variants={fadeUpItem}>
             <div className="font-heading text-[32px] font-extrabold text-accent-light md:text-[38px]">
-              {s.num}
+              <Counter value={s.num} />
             </div>
             <div className="mt-1.5 font-body text-[13px] text-white/75">
               {s.label}
             </div>
-          </div>
+          </motion.div>
         ))}
-      </section>
+      </RevealGroup>
 
       {/* Recent Projects */}
       <section id="projects" className="flex flex-col gap-8 px-6 py-16 md:px-14 md:py-20">
-        <h2 className="font-heading text-[28px] font-bold text-ink md:text-[32px]">
-          Recent Projects
-        </h2>
-        <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
+        <Reveal>
+          <h2 className="font-heading text-[28px] font-bold text-ink md:text-[32px]">
+            Recent Projects
+          </h2>
+        </Reveal>
+        <RevealGroup className="grid grid-cols-2 gap-5 md:grid-cols-4" stagger={0.1}>
           {projects.map((p) => (
-            <div key={p.label} className="relative h-[190px] w-full overflow-hidden rounded-md">
+            <motion.div
+              key={p.label}
+              variants={fadeUpItem}
+              className="group relative h-[190px] w-full overflow-hidden rounded-md"
+            >
               <Image
                 src={p.img}
                 alt={p.label}
                 fill
                 sizes="(max-width: 768px) 50vw, 25vw"
-                className="object-cover"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
               />
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </RevealGroup>
       </section>
 
       {/* Clients */}
@@ -212,16 +251,17 @@ export function VariantA() {
         <span className="font-body text-[13px] font-semibold uppercase tracking-[2px] text-accent">
           Our Clients
         </span>
-        <div className="flex flex-wrap items-center gap-x-10 gap-y-4">
+        <RevealGroup className="flex flex-wrap items-center gap-x-10 gap-y-4" stagger={0.05}>
           {clients.map((c) => (
-            <span
+            <motion.span
               key={c}
+              variants={fadeUpItem}
               className="font-heading text-base font-bold text-ink-muted"
             >
               {c}
-            </span>
+            </motion.span>
           ))}
-        </div>
+        </RevealGroup>
       </section>
 
       {/* Closing CTA */}
@@ -229,15 +269,21 @@ export function VariantA() {
         id="contact"
         className="flex flex-col items-start gap-6 bg-accent px-6 py-16 md:flex-row md:items-center md:justify-between md:px-14"
       >
-        <h2 className="max-w-[520px] font-heading text-2xl font-bold text-white md:text-[30px]">
-          Ready to start your project? Get in touch.
-        </h2>
-        <a
-          href="tel:+19560000000"
-          className="rounded-md bg-ink px-8 py-4 font-body text-[15px] font-semibold text-white transition-colors hover:bg-black"
-        >
-          Call (956) 000-0000
-        </a>
+        <Reveal>
+          <h2 className="max-w-[520px] font-heading text-2xl font-bold text-white md:text-[30px]">
+            Ready to start your project? Get in touch.
+          </h2>
+        </Reveal>
+        <Reveal delay={0.15}>
+          <motion.a
+            href="tel:+19560000000"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            className="inline-block rounded-md bg-ink px-8 py-4 font-body text-[15px] font-semibold text-white transition-colors hover:bg-black"
+          >
+            Call (956) 000-0000
+          </motion.a>
+        </Reveal>
       </section>
     </div>
   );
