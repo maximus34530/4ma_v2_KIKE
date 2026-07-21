@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+:root {
+  --ink: oklch(22% 0.01 250);
+  --ink-soft: oklch(35% 0.01 250);
+  --ink-muted: oklch(45% 0.01 250);
+  --ink-faint: oklch(55% 0.01 250);
+  --paper: oklch(98% 0.005 90);
+  --line: oklch(89% 0.005 90);
+  --accent: oklch(52% 0.12 145);
+  --accent-dark: oklch(42% 0.12 145);
+  --accent-light: oklch(70% 0.12 145);
+}
+
+@theme inline {
+  --font-heading: var(--font-archivo), sans-serif;
+  --font-body: var(--font-inter), sans-serif;
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+  --color-paper: var(--paper);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-dark: var(--accent-dark);
+  --color-accent-light: var(--accent-light);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* Diagonal-stripe placeholder used wherever real photography isn't wired in yet. */
+.photo-slot {
+  background-image: repeating-linear-gradient(
+    45deg,
+    oklch(90% 0.005 90),
+    oklch(90% 0.005 90) 10px,
+    oklch(94% 0.003 90) 10px,
+    oklch(94% 0.003 90) 20px
+  );
+}
+
+.photo-slot-dark {
+  background-image: repeating-linear-gradient(
+    45deg,
+    oklch(30% 0.01 250),
+    oklch(30% 0.01 250) 10px,
+    oklch(26% 0.01 250) 10px,
+    oklch(26% 0.01 250) 20px
+  );
+}
