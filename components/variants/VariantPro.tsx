@@ -1,7 +1,7 @@
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Logo } from "@/components/Logo";
-import { PhotoSlot } from "@/components/PhotoSlot";
 
 const serviceFeatures = [
   {
@@ -10,16 +10,22 @@ const serviceFeatures = [
     title: "Custom Homes",
     body: "Ground-up custom homes built to your plans, from foundation to finish, with the craftsmanship families keep for generations.",
     span: "row-span-2",
+    img: "/custom-home.jpg",
+    alt: "Custom home built by 4Ma Construction in McAllen",
   },
   {
     key: "commercial",
     eyebrow: "Commercial",
     title: "Retail, Church & Industrial",
+    img: "/commercial.jpg",
+    alt: "Two-story commercial office built by 4Ma Construction",
   },
   {
     key: "outdoor",
     eyebrow: "Outdoor Living",
     title: "Patios, Pools & Additions",
+    img: "/framing.jpg",
+    alt: "Patio and roof framing jobsite",
   },
 ];
 
@@ -42,11 +48,26 @@ const whyUs = [
 ];
 
 const gallery = [
-  { label: "Custom Residence · Edinburg", span: "col-span-2 row-span-2" },
-  { label: "Interior Finish · McAllen", span: "col-span-2" },
-  { label: "Retail Build-Out · Mission", span: "col-span-2" },
-  { label: "Church · Pharr", span: "col-span-2" },
-  { label: "Outdoor Living · Edinburg", span: "col-span-2" },
+  {
+    label: "Spanish Colonial Estate · Edinburg",
+    img: "/hero.jpg",
+    span: "md:col-span-2 md:row-span-2",
+  },
+  {
+    label: "Custom Home · McAllen",
+    img: "/custom-home.jpg",
+    span: "",
+  },
+  {
+    label: "Two-Story Office · McAllen",
+    img: "/commercial.jpg",
+    span: "",
+  },
+  {
+    label: "Patio & Roof Framing · Edinburg",
+    img: "/framing.jpg",
+    span: "md:col-span-2",
+  },
 ];
 
 const clients = [
@@ -116,7 +137,14 @@ export function VariantPro() {
 
       {/* Hero */}
       <section className="relative flex h-[560px] items-end overflow-hidden bg-[oklch(20%_0.01_250)] md:h-[760px]">
-        <PhotoSlot label="hero — luxury custom home, golden hour" className="absolute inset-0" />
+        <Image
+          src="/hero.jpg"
+          alt="Spanish-colonial estate at dusk, built by 4Ma Construction"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-[oklch(20%_0.01_250)]/30 via-transparent to-[oklch(20%_0.01_250)]/85" />
         <div className="relative flex max-w-[840px] flex-col gap-5 px-6 pb-12 md:px-14 md:pb-16">
           <span className="font-body text-[13px] font-semibold uppercase tracking-[2.5px] text-accent-light">
@@ -176,7 +204,13 @@ export function VariantPro() {
               transition={{ duration: 0.5 }}
               className={`relative min-h-[260px] overflow-hidden rounded-lg ${s.span ?? ""}`}
             >
-              <PhotoSlot dark label={s.title} className="absolute inset-0" />
+              <Image
+                src={s.img}
+                alt={s.alt}
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-[oklch(20%_0.01_250)]/90 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 flex flex-col gap-2 p-7">
                 <span className="font-body text-xs font-semibold uppercase tracking-[2px] text-accent-light">
@@ -198,7 +232,15 @@ export function VariantPro() {
 
       {/* Why 4Ma */}
       <section className="grid bg-[oklch(20%_0.01_250)] md:grid-cols-[1fr_1.1fr]">
-        <PhotoSlot dark label="craftsmanship detail" className="min-h-[320px] md:min-h-[560px]" />
+        <div className="relative min-h-[320px] md:min-h-[560px]">
+          <Image
+            src="/framing.jpg"
+            alt="Patio and roof framing jobsite detail"
+            fill
+            sizes="(max-width: 768px) 100vw, 45vw"
+            className="object-cover"
+          />
+        </div>
         <div className="flex flex-col justify-center gap-8 px-6 py-16 md:px-18 md:py-22">
           <div className="flex flex-col gap-4">
             <span className="font-body text-[13px] font-semibold uppercase tracking-[2.5px] text-accent-light">
@@ -241,13 +283,19 @@ export function VariantPro() {
             Work across the Valley.
           </h2>
         </div>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-6 md:auto-rows-[200px]">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:auto-rows-[220px]">
           {gallery.map((g) => (
             <div
               key={g.label}
               className={`relative min-h-[160px] overflow-hidden rounded-lg ${g.span}`}
             >
-              <PhotoSlot dark label={g.label} className="absolute inset-0" />
+              <Image
+                src={g.img}
+                alt={g.label}
+                fill
+                sizes="(max-width: 768px) 50vw, 25vw"
+                className="object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-[oklch(20%_0.01_250)]/80 via-transparent to-transparent" />
               <span className="absolute bottom-4 left-4 font-heading text-sm font-bold text-white md:text-base">
                 {g.label}
